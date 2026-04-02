@@ -30,7 +30,24 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run("no-deprecated-components", noDeprecatedComponentsRule, {
-    invalid: [],
+    invalid: [
+        {
+            code: dedent`
+                import { Popover } from "@blueprintjs/core";
+
+                return <Popover />;
+            `,
+            errors: [
+                {
+                    data: {
+                        deprecatedComponentName: "Popover",
+                        newComponentName: "PopoverNext",
+                    },
+                    messageId: "migration",
+                },
+            ],
+        },
+    ],
     valid: [
         {
             code: dedent`
